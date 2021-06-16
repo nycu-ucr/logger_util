@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"log"
 	"os"
-
+	"time"
 	"github.com/gin-gonic/gin"
 	"github.com/sirupsen/logrus"
 )
@@ -17,7 +17,7 @@ type FileHook struct {
 }
 
 func NewFileHook(file string, flag int, chmod os.FileMode) (*FileHook, error) {
-	plainFormatter := &logrus.TextFormatter{DisableColors: true}
+	plainFormatter := &logrus.TextFormatter{DisableColors: true,TimestampFormat: time.RFC3339Nano}
 	logFile, err := os.OpenFile(file, flag, chmod)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "unable to write file on filehook %v", err)
