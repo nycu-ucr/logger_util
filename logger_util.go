@@ -5,7 +5,8 @@ import (
 	"log"
 	"os"
 	"time"
-	"github.com/gin-gonic/gin"
+
+	"github.com/nycu-ucr/gin"
 	"github.com/sirupsen/logrus"
 )
 
@@ -17,7 +18,7 @@ type FileHook struct {
 }
 
 func NewFileHook(file string, flag int, chmod os.FileMode) (*FileHook, error) {
-	plainFormatter := &logrus.TextFormatter{DisableColors: true,TimestampFormat: time.RFC3339Nano}
+	plainFormatter := &logrus.TextFormatter{DisableColors: true, TimestampFormat: time.RFC3339Nano}
 	logFile, err := os.OpenFile(file, flag, chmod)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "unable to write file on filehook %v", err)
@@ -55,7 +56,7 @@ func (hook *FileHook) Levels() []logrus.Level {
 	}
 }
 
-//The Middleware will write the Gin logs to logrus.
+// The Middleware will write the Gin logs to logrus.
 func ginToLogrus(log *logrus.Entry) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		path := c.Request.URL.Path
@@ -78,7 +79,7 @@ func ginToLogrus(log *logrus.Entry) gin.HandlerFunc {
 	}
 }
 
-//NewGinWithLogrus - returns an Engine instance with the ginToLogrus and Recovery middleware already attached.
+// NewGinWithLogrus - returns an Engine instance with the ginToLogrus and Recovery middleware already attached.
 func NewGinWithLogrus(log *logrus.Entry) *gin.Engine {
 	engine := gin.New()
 	engine.Use(ginToLogrus(log), gin.Recovery())
